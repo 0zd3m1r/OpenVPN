@@ -1,0 +1,24 @@
+1 #!/bin/bash
+  2 USER=`whoami`
+  3
+  4 if [ "$USER" != "root" ]; then
+  5         echo "You need to run me with sudo!"
+  6         exit
+  7 fi
+  8
+  9 echo -n "Enter the client name: "
+ 10 read CLIENT_NAME
+ 11
+ 12 # Remove the client from the database
+ 13 cd ~/openvpn-ca
+ 14 source ./vars
+ 15 ./revoke-full $CLIENT_NAME
+ 16
+ 17 # remove the client keys
+ 18 cd ~/openvpn-ca/keys
+ 19 rm $CLIENT_NAME.key
+ 20 rm $CLIENT_NAME.csr
+ 21 rm $CLIENT_NAME.crt
+ 22
+ 23 # remove the static clients file
+ 24 #rm /etc/openvpn/staticclients/$CLIENT_NAME
